@@ -1,0 +1,112 @@
+// File: src/components/Review.jsx Works
+import React, { useMemo, useState } from 'react';
+import { useConversationStore } from '../store/useConversationStore';
+import { unlockAudio, speakLine } from '../utils/tts';
+
+function estimateScore(prompt, response) {
+  const pinyinWords = String(prompt?.pinyin || '').trim().toLowerCase().split(/\s+/).filter(Boolean);
+  const responseWords = String(response || '').trim().toLowerCase().split(/\s+/).filter(Boolean);
+  if (!pinyinWords.length) return 0;
+  const matches = responseWords.filter((w) => pinyinWords.includes(w)).length;
+  return Math.round((matches / pinyinWords.length) * 100);
+}
+
+export default function Review() {
+  const { responseHistory = [], clearHistory = () => {} } = useConversationStore();
+  const [filter, setFilter] = useState('');
+
+  const filtered = useMemo(() => {
+    const f = String(filter || '').toLowerCase();
+    if (!f) return responseHistory;
+    return responseHistory.filter((e) => {
+      const h = (e?.prompt?.hanzi || '').toLowerCase();
+      const p = (e?.prompt?.pinyin || '').toLowerCase();
+      const en = (e?.prompt?.english || '').toLowerCase();
+      const r = (e?.response || '').toLowerCase();
+      return h.includes(f) || p.includes(f) || en.includes(f) || r.includes(f);
+    });
+  }, [filter, responseHistory]);
+
+  if (!responseHistory.length) return null;
+
+  async function replayEn(text) {
+    try {
+      await unlockAudio();
+      await speakLine({ text: String(text || ''), lang: 'en-US' });
+    } catch {}
+  }
+
+  return (
+    <div className="mt-10 p-4 bg-white rounded-xl shadow">
+      <h2 className="text-xl font-bold mb-4">📚 Review All Responses</h2>
+
+      <div className="flex gap-2 items-center mb-3">
+        <input
+          type="text"
+          placeholder="Filter by Hanzi / Pinyin / English / Response…"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          className="p-2 border rounded flex-1"
+        />
+        <button
+          onClick={clearHistory}
+          className="px-3 py-2 bg-red-600 text-white rounded shadow hover:bg-red-700"
+          title="Clear history"
+        >
+          🗑 Clear
+        </button>
+      </div>
+
+      <div className="overflow-auto">
+        <table className="table-auto w-full text-sm text-left">
+          <thead>
+            <tr>
+              <th className="px-2 py-1 border-b">#</th>
+              <th className="px-2 py-1 border-b">Time</th>
+              <th className="px-2 py-1 border-b">Hanzi</th>
+              <th className="px-2 py-1 border-b">Pinyin</th>
+              <th className="px-2 py-1 border-b">English</th>
+              <th className="px-2 py-1 border-b">User Response</th>
+              <th className="px-2 py-1 border-b">Score</th>
+              <th className="px-2 py-1 border-b">Replay (EN)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map((e, idx) => {
+              const ts = e?.ts ? new Date(e.ts) : null;
+              const when = ts
+                ? `${ts.toLocaleDateString()} ${ts.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+                : '';
+              const p = e?.prompt || {};
+              const score = estimateScore(p, e?.response);
+              return (
+                <tr key={idx} className="border-t align-top">
+                  <td className="px-2 py-1">{idx + 1}</td>
+                  <td className="px-2 py-1 whitespace-nowrap">{when}</td>
+                  <td className="px-2 py-1">{p.hanzi || ''}</td>
+                  <td className="px-2 py-1">{p.pinyin || ''}</td>
+                  <td className="px-2 py-1">{p.english || ''}</td>
+                  <td className="px-2 py-1">{e.response || ''}</td>
+                  <td className="px-2 py-1">{score}%</td>
+                  <td className="px-2 py-1">
+                    {p.english ? (
+                      <button
+                        className="px-2 py-1 text-xs bg-gray-800 text-white rounded"
+                        onClick={() => replayEn(p.english)}
+                      >
+                        ▶ EN
+                      </button>
+                    ) : (
+                      <span className="text-[11px] text-gray-400">—</span>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+

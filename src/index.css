@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Make Avatar.jsx root <div> fill the fixed card height without touching Avatar.jsx */
+.avatar-card > div {
+  height: 100%;
+}
+
+/* Optional: ensure any canvas inside also fills (R3F already sets 100%) */
+.avatar-card canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}

@@ -1,0 +1,105 @@
+{
+  "name": "huayu-buddy",
+  "version": "4.0.0",
+  "description": "Chinese Language tutor",
+  "author": "pw",
+  "private": true,
+  "proxy": "http://localhost:8787",
+  "main": "electron/main.mjs",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "server:dev": "npm --prefix server run dev",
+    "server:start": "npm --prefix server start",
+    "dev": "concurrently -k -n UI,API -c cyan,magenta \"npm:start\" \"npm:server:dev\"",
+    "start:prod": "npm run build && npm --prefix server start",
+    "electron:start": "npm run build && cross-env NODE_ENV=production electron .",
+    "electron:dev": "node electron/dev-runner.mjs",
+    "electron:build": "npm run build && cross-env NODE_ENV=production electron-builder --win portable --x64"
+  },
+  "dependencies": {
+    "@craco/craco": "7.1.0",
+    "@react-three/drei": "9.56.4",
+    "@react-three/fiber": "8.13.6",
+    "autoprefixer": "10.4.12",
+    "concurrently": "^8.2.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "openai": "^5.16.0",
+    "pdfjs-dist": "3.4.120",
+    "pinyin-pro": "^3.27.0",
+    "postcss": "^8.4.38",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-scripts": "5.0.1",
+    "tailwindcss": "3.2.4",
+    "three": "0.153.0",
+    "xlsx": "^0.18.5",
+    "zustand": "^4.4.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "electron": "^30.0.9",
+    "electron-builder": "^24.13.3",
+    "eslint": "8.57.0",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "husky": "9.1.0",
+    "lint-staged": "15.2.8",
+    "prettier": "3.3.3",
+    "react-scripts": "5.0.1",
+    "serve": "^14.2.0",
+    "wait-on": "^7.2.0"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "eslint --max-warnings=0",
+      "prettier -w"
+    ],
+    "src/**/*.{css,md,json}": [
+      "prettier -w"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "build": {
+    "extends": null,
+    "appId": "com.huayubuddy.app",
+    "productName": "Huayu Buddy",
+    "asar": true,
+    "files": [
+      "build/**/*",
+      "electron/**/*",
+      "server/**/*",
+      "src/shared/**/*",
+      "public/maps/**/*",
+      "package.json",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "HuayuBuddy-${version}.exe"
+    }
+  }
+}
