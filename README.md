@@ -193,7 +193,6 @@ Contributions welcome! Please ensure:
 
 ## 📄 License
 
-[Add your license information here]
 
 ---
 
