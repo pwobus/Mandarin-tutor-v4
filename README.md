@@ -1,5 +1,5 @@
 # Huayu Buddy — Chinese Conversation Tutor
-![Mandarin tutor](./sc-1c.png)
+
 A comprehensive Mandarin Chinese learning application featuring real-time conversation practice with AI tutoring, 3D avatar visualization, and multi-platform support.
 
 ## ✨ Features
