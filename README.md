@@ -1,72 +1,208 @@
-# File: README.md
-
 # Huayu Buddy — Chinese Conversation Tutor
 
-A Mandarin conversation web app with:
-- Spoken tutor replies (OpenAI TTS) and optional browser TTS fallback
-- Head-only 3D avatar with lip-sync (Viseme) + blinking
-- Pinyin + Hanzi display, optional English translation
-- Selectable HSK 1-5 vocabulary and review table
-- Health checks & diagnostics
-- Optional WebRTC realtime chat panel with gpt-4o realtime preview or the lighter `gpt-realtime-mini`
+A comprehensive Mandarin Chinese learning application featuring real-time conversation practice with AI tutoring, 3D avatar visualization, and multi-platform support.
+
+## ✨ Features
+
+- 🗣️ **Spoken Responses**: OpenAI TTS with browser TTS fallback
+- 👤 **3D Avatar**: Head-only model with lip-sync (viseme) and natural blinking
+- 📝 **Multi-Script Display**: Pinyin, Hanzi (Chinese characters), and optional English translations
+- 📚 **HSK Integration**: Selectable vocabulary levels (HSK 1-5) with review tables
+- 🔍 **Diagnostics**: Built-in health checks and system monitoring
+- 🎙️ **WebRTC Realtime**: Optional streaming chat with `gpt-4o-realtime-preview` or `gpt-realtime-mini`
+- 💻 **Cross-Platform**: Web app + Electron desktop application
 
 ---
 
-## 1) Quick Start
-Make sure nodemon is installed:
-- npm install -g nodemon
- 
-OPENAI_API_KEY=sk- npm run dev
+## 🚀 Quick Start
+
+### Prerequisites
+
+Install nodemon globally:
+
+```bash
+npm install -g nodemon
+```
+
+### Development Server
+
+Start the development server with your OpenAI API key:
+
+```bash
+OPENAI_API_KEY=sk-your_key_here npm run dev
+```
+
+The application will be available at `http://localhost:3000`
 
 ---
 
-## 2) Realtime (WebRTC) panel
+## 🎤 Realtime WebRTC Panel
 
-Use the **Realtime (beta)** panel in the tutor sidebar to try OpenAI's WebRTC streaming experience.
+Experience OpenAI's WebRTC streaming for natural, low-latency conversations.
 
-* Click **Connect** to request an ephemeral session token from `/api/realtime-session` and establish the peer connection.
-* Enable the **gpt-realtime-mini** toggle to switch the session setup to the lighter-weight `gpt-realtime-mini` API. The UI automatically disables voice selection because mini does not accept a custom voice payload.
-* Leave the toggle off to keep using the default realtime preview models (gpt-4o mini/standard) and selectable voices.
-* Push-to-talk controls whether the microphone track is live once connected.
+### Getting Started
 
-> The checkbox persists in `localStorage`, so your last-used setting sticks across reloads. Disconnect before flipping the toggle or changing models.
+1. Open the **Realtime (beta)** panel in the tutor sidebar
+2. Click **Connect** to request an ephemeral session token from `/api/realtime-session`
+3. The app establishes a WebRTC peer connection automatically
+
+### Configuration Options
+
+#### Model Selection
+
+- **Default**: `gpt-4o-realtime-preview` (standard/mini variants)
+  - Full feature set with custom voice selection
+- **Lightweight**: Toggle `gpt-realtime-mini` for faster responses
+  - Voice selection automatically disabled (not supported by mini)
+
+> ⚠️ **Important**: Disconnect before switching models or toggling options
+
+#### Push-to-Talk
+
+- Controls microphone track activation when connected
+- Setting persists in `localStorage` across sessions
 
 ---
 
-## 3) Electron Desktop App
+## 💻 Electron Desktop App
 
-The project now ships with an Electron wrapper that bundles both the React UI and the Express API into a single desktop executable.
+Bundle the entire application into a standalone desktop executable with integrated Express API.
 
-### Local development
+### Development Mode
 
-```bash
-# Starts CRA on :3000, the API on :8787, then launches Electron once both are ready
-OPENAI_API_KEY=sk- npm run electron:dev
-```
-
-> **Headless / CI environments**
->
-> When `DISPLAY`/`WAYLAND_DISPLAY` are missing (for example, on remote Linux containers or CI runners) the dev script automatically skips launching the Electron shell and falls back to the browser + API servers only. Set `ELECTRON_DEV_SKIP=0` if you still want to attempt launching Electron, or `ELECTRON_DEV_SKIP=1` to force skipping regardless of the environment.
-
-### Test the packaged experience without building an installer
+Run both the React UI and API server, then launch Electron:
 
 ```bash
-# Builds the React app and starts Electron against the embedded Express server
-OPENAI_API_KEY=sk- npm run electron:start
+OPENAI_API_KEY=sk-your_key_here npm run electron:dev
 ```
 
-### Produce a portable Windows `.exe`
+**What happens:**
+- React dev server starts on `:3000`
+- Express API starts on `:8787`
+- Electron window launches once both servers are ready
+
+### Testing Production Build
+
+Test the packaged experience without creating an installer:
 
 ```bash
-# Runs `react-scripts build` and then packages a Portable (.exe) build into dist/
-OPENAI_API_KEY=sk- npm run electron:build
+OPENAI_API_KEY=sk-your_key_here npm run electron:start
 ```
 
-The resulting executable lives in `dist/HuayuBuddy-<version>.exe`. It runs without a console window and starts an internal Express server bound to `127.0.0.1` so no additional services are required.
+Builds the React app and runs Electron against the embedded Express server.
 
-> **Notes**
->
-> * `electron:build` targets a portable Windows binary. When run on non-Windows hosts it may require Wine; running the command on Windows avoids that requirement.
-> * The packaged backend expects `OPENAI_API_KEY` (and optional model overrides) to be present in the launching environment—set them before opening the app.
-> * On Linux the dev shell disables Electron's sandbox automatically so that local runs don't require `chrome-sandbox` to be installed with setuid permissions.
+### Building Portable Executable
 
+Create a Windows `.exe` installer:
+
+```bash
+npm run electron:build
+```
+
+**Output**: `dist/HuayuBuddy-<version>.exe`
+
+**Features:**
+- No console window
+- Internal Express server on `127.0.0.1`
+- Self-contained (no external dependencies)
+
+---
+
+## 🔧 Configuration
+
+### Platform-Specific Notes
+
+#### Windows
+- Run `electron:build` directly for native packaging
+- No additional dependencies required
+
+#### Linux
+- Development mode disables Electron sandbox automatically
+- No `chrome-sandbox` setuid permissions needed
+- Production builds may require Wine for cross-platform packaging
+
+#### macOS
+- Standard Electron development workflow
+- May require additional signing for distribution
+
+---
+
+## 📁 Project Structure
+
+```
+huayu-buddy/
+├── src/                    # React application source
+├── public/                 # Static assets
+├── electron/               # Electron main process
+├── server/                 # Express API backend
+├── dist/                   # Built executables
+└── README.md
+```
+
+---
+
+## 🛠️ Development Commands
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start web development server |
+| `npm run electron:dev` | Start Electron development mode |
+| `npm run electron:start` | Test production Electron build |
+| `npm run electron:build` | Package Windows portable executable |
+
+---
+
+## 🐛 Troubleshooting
+
+### Realtime Panel Issues
+
+- **Connection fails**: Verify `OPENAI_API_KEY` is valid
+- **No audio**: Check browser microphone permissions
+- **Voice not working**: Ensure `gpt-realtime-mini` toggle is OFF for custom voices
+
+### Electron Build Issues
+
+- **Windows packaging fails**: Run on Windows or install Wine
+- **Sandbox errors (Linux)**: Development mode disables sandbox automatically
+- **API key not found**: Set environment variables before launching the executable
+
+---
+
+## 📚 Learning Resources
+
+### HSK Levels
+
+- **HSK 1**: 150 words (basic conversations)
+- **HSK 2**: 300 words (simple daily topics)
+- **HSK 3**: 600 words (basic fluency)
+- **HSK 4**: 1,200 words (intermediate topics)
+- **HSK 5**: 2,500 words (advanced discussions)
+
+---
+
+## 🤝 Contributing
+
+Contributions welcome! Please ensure:
+
+1. OpenAI API calls are properly error-handled
+2. Electron builds work on all target platforms
+3. 3D avatar lip-sync is synchronized with TTS
+4. HSK vocabulary data is accurate
+
+---
+
+## 📄 License
+
+[Add your license information here]
+
+---
+
+## 🔗 Related Documentation
+
+- [OpenAI Realtime API](https://platform.openai.com/docs/guides/realtime)
+- [Electron Documentation](https://www.electronjs.org/docs)
+- [HSK Standard](https://en.wikipedia.org/wiki/Hanyu_Shuiping_Kaoshi)
+
+---
+
+**Built with**: React, Express, Electron, OpenAI API, Three.js
