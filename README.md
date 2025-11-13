@@ -2,29 +2,43 @@
 ![Mandarin tutor](./sc-1c.png)
 A comprehensive Mandarin Chinese learning application featuring real-time conversation practice with AI tutoring, 3D avatar visualization, and multi-platform support.
 
-## ✨ Features
+### Core Learning Features
 
-- 🗣️ **Spoken Responses**: OpenAI TTS with browser TTS fallback
-- 👤 **3D Avatar**: Head-only model with lip-sync (viseme) and natural blinking
-- 📝 **Multi-Script Display**: Pinyin, Hanzi (Chinese characters), and optional English translations
-- 📚 **HSK Integration**: Selectable vocabulary levels (HSK 1-5) with review tables
-- 🔍 **Diagnostics**: Built-in health checks and system monitoring
-- 🎙️ **WebRTC Realtime**: Optional streaming chat with `gpt-4o-realtime-preview` or `gpt-realtime-mini`
-- 💻 **Cross-Platform**: Web app + Electron desktop application
+- 🗣️ **Real spoken practice** – hold-to-talk microphone input, get instant spoken responses in natural Mandarin using OpenAI TTS, with browser TTS fallback when needed. Optional streaming chat with `gpt-4o-realtime-preview` or `gpt-realtime-mini`
+- 👤 **3D tutor avatar** – head-only 3D model with lip-sync visemes and natural blinking, so it feels like you’re talking to a real tutor.
+- 📝 **Multi-script display** – see Hanzi, Pinyin (with tone marks), and optional English translations so you can adapt to your level.
+- 📚 **HSK-focused practice** – choose HSK 1–5 word lists to shape the conversation topics and review vocab in built-in tables.
 
+## 🎓 How to Use Huayu Buddy to Learn
+
+1. Pick your **HSK level** and optionally a topic (e.g., ordering food, travel, work).
+2. Click **Start Conversation**, hold the **Hold to Talk** button, and speak in Mandarin or English.
+3. The AI tutor responds in Mandarin (with audio) or optionally both Mandarin and English, plus Hanzi + Pinyin subtitles.
+4. Use the **HSK Review** tab to revisit words that came up in your conversation.
 ---
 
-## 🚀 Quick Start
+## 🧩 Installation
 
-### Prerequisites
-
-Install nodemon globally:
+1. Clone this repo:
+```bash
+   git clone https://github.com/pwobus/Mandarin-tutor-v4
+   cd huayu-buddy
+```
+Install dependencies:
+```bash
+npm install
+```
+(Optional) Install nodemon globally:
 
 ```bash
 npm install -g nodemon
 ```
 
-### Development Server
+```md
+Create a `.env` file in the project root:
+
+```bash
+OPENAI_API_KEY=sk-your_key_here
 
 Start the development server with your OpenAI API key:
 
@@ -35,31 +49,38 @@ OPENAI_API_KEY=sk-your_key_here npm run dev
 The application will be available at `http://localhost:3000`
 
 ---
+## 🏗️ Architecture Overview
 
-## 🎤 Realtime WebRTC Panel
+- **React UI (`/src`)**
+  - Conversation UI, HSK vocab browser, 3D avatar using Three.js
+  - Realtime panel for WebRTC-based chat
 
-Uses OpenAI's WebRTC streaming for natural, low-latency conversations.
+- **Express API (`/server`)**
+  - `/api/realtime-session` – issues ephemeral Realtime API tokens
+  - `/api/tts` – optional REST wrapper for text-to-speech
+  - Health check + diagnostics endpoints
 
-### Getting Started
+- **Electron wrapper (`/electron`)**
+  - Bundles React + Express into a single desktop app
+  - Manages local window, tray, and packaging
 
-1. Click **Connect** to request an ephemeral session token from `/api/realtime-session`
-2. The app establishes a WebRTC peer connection automatically
+- **Assets (`/public`)**
+  - Avatar models, textures, screenshots, and static files
 
-### Configuration Options
+### Realtime vs. TTS
 
-#### Model Selection
+- **Realtime WebRTC panel**
+  - Streaming conversation with low latency
+  - Uses `gpt-4o-realtime-preview` or `gpt-realtime-mini`
+  - Best for “hands-free” back-and-forth speaking practice
 
-- **Default**: `gpt-4o-realtime-preview` (standard/mini variants)
-  - Full feature set with custom voice selection
-- **Lightweight**: Toggle `gpt-realtime-mini` for faster responses
-  - Voice selection automatically disabled (not supported by mini)
+- **Standard TTS flow**
+  - Speak or send a text prompt, get back a synthesized audio reply
+  - Slightly higher latency, simpler to debug
+  - Backed by OpenAI TTS with browser TTS as fallback
 
-> ⚠️ **Important**: Disconnect before switching models or toggling options
 
-## 🎤 OpenAI TTS with browser TTS fallback
-
-- Click **Start Conversation** to begin. 
-- **Hold to Talk (Whisper)** controls the microphone. 
+---
 
 ## 💻 Electron Desktop App
 
@@ -77,6 +98,7 @@ OPENAI_API_KEY=sk-your_key_here npm run electron:dev
 - React dev server starts on `:3000`
 - Express API starts on `:8787`
 - Electron window launches once both servers are ready
+
 
 ### Testing Production Build
 
@@ -105,7 +127,6 @@ npm run electron:build
 
 ---
 
-## 🔧 Configuration
 
 ### Platform-Specific Notes
 
@@ -117,7 +138,7 @@ npm run electron:build
 - Development mode disables Electron sandbox automatically
 - No `chrome-sandbox` setuid permissions needed
 - Production builds may require Wine for cross-platform packaging
-- Runs well on a Raspberry PI
+- Runs well on a raspberry pi
 
 #### macOS
 - Standard Electron development workflow
@@ -177,17 +198,19 @@ huayu-buddy/
 - **HSK 5**: 2,500 words (advanced discussions)
 
 ---
+## 📄 License
+
+MIT © 2025 pwobus
 
 ## 🤝 Contributing
 
-Contributions welcome! Please ensure:
+## 🗺️ Roadmap
 
-1. OpenAI API calls are properly error-handled
-2. Electron builds work on all target platforms
-3. 3D avatar lip-sync is synchronized with TTS
-4. HSK vocabulary data is accurate
+- [ ] HSK 6 vocab integration
+- [ ] Session history + spaced repetition review
+- [ ] Per-user progress tracking
+- [ ] More avatar styles and camera angles
 
----
 ---
 
 ## 🔗 Related Documentation
