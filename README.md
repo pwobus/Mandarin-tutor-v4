@@ -38,13 +38,12 @@ The application will be available at `http://localhost:3000`
 
 ## 🎤 Realtime WebRTC Panel
 
-Experience OpenAI's WebRTC streaming for natural, low-latency conversations.
+Uses OpenAI's WebRTC streaming for natural, low-latency conversations.
 
 ### Getting Started
 
-1. Open the **Realtime (beta)** panel in the tutor sidebar
-2. Click **Connect** to request an ephemeral session token from `/api/realtime-session`
-3. The app establishes a WebRTC peer connection automatically
+1. Click **Connect** to request an ephemeral session token from `/api/realtime-session`
+2. The app establishes a WebRTC peer connection automatically
 
 ### Configuration Options
 
@@ -57,12 +56,10 @@ Experience OpenAI's WebRTC streaming for natural, low-latency conversations.
 
 > ⚠️ **Important**: Disconnect before switching models or toggling options
 
-#### Push-to-Talk
+## 🎤 OpenAI TTS with browser TTS fallback
 
-- Controls microphone track activation when connected
-- Setting persists in `localStorage` across sessions
-
----
+- Click **Start Conversation** to begin. 
+- **Hold to Talk (Whisper)** controls the microphone. 
 
 ## 💻 Electron Desktop App
 
