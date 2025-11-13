@@ -117,6 +117,7 @@ npm run electron:build
 - Development mode disables Electron sandbox automatically
 - No `chrome-sandbox` setuid permissions needed
 - Production builds may require Wine for cross-platform packaging
+- Runs well on a Raspberry PI
 
 #### macOS
 - Standard Electron development workflow
