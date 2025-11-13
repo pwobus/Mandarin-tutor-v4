@@ -80,7 +80,7 @@ OPENAI_API_KEY=sk-your_key_here npm run electron:dev
 
 ### Testing Production Build
 
-Test the packaged experience without creating an installer:
+Test without creating an installer:
 
 ```bash
 OPENAI_API_KEY=sk-your_key_here npm run electron:start
@@ -187,10 +187,6 @@ Contributions welcome! Please ensure:
 4. HSK vocabulary data is accurate
 
 ---
-
-## 📄 License
-
-
 ---
 
 ## 🔗 Related Documentation
