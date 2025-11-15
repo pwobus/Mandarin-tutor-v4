@@ -20,17 +20,7 @@ const ENV_CANDIDATES = [
   path.resolve(__dirname, '.env'),
 ];
 
-let loadedEnv = false;
-for (const envPath of ENV_CANDIDATES) {
-  if (fs.existsSync(envPath)) {
-    dotenv.config({ path: envPath });
-    loadedEnv = true;
-  }
-}
-
-if (!loadedEnv) {
-  dotenv.config();
-}
+dotenv.config({ path: ENV_CANDIDATES.find(fs.existsSync) });
 
 const DEFAULT_PATHS = {
   frontPublic: path.resolve(__dirname, '..', 'public'),
