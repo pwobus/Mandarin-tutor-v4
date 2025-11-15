@@ -43,7 +43,7 @@ OPENAI_API_KEY=sk-your_key_here
 Start the development server with your OpenAI API key:
 
 ```bash
-OPENAI_API_KEY=sk-your_key_here npm run dev
+npm run dev
 ```
 
 The application will be available at `http://localhost:3000`
@@ -91,7 +91,7 @@ Bundle the entire application into a standalone desktop executable with integrat
 Run both the React UI and API server, then launch Electron:
 
 ```bash
-OPENAI_API_KEY=sk-your_key_here npm run electron:dev
+npm run electron:dev
 ```
 
 **What happens:**
@@ -105,7 +105,8 @@ OPENAI_API_KEY=sk-your_key_here npm run electron:dev
 Test without creating an installer:
 
 ```bash
-OPENAI_API_KEY=sk-your_key_here npm run electron:start
+
+npm run electron:start
 ```
 
 Builds the React app and runs Electron against the embedded Express server.
@@ -126,7 +127,6 @@ npm run electron:build
 - Self-contained (no external dependencies)
 
 ---
-
 
 ### Platform-Specific Notes
 
