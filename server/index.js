@@ -3,6 +3,7 @@ import cors from 'cors';
 import * as fs from 'fs';
 import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
+import dotenv from 'dotenv';
 import OpenAI from 'openai';
 import { DEFAULT_PERSONA, buildTutorPrompt } from '../src/shared/personaDefaults.js';
 import * as XLSX from 'xlsx/xlsx.mjs';
@@ -11,6 +12,15 @@ XLSX.set_fs(fs);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+const ENV_CANDIDATES = [
+  path.resolve(__dirname, '..', '.env.local'),
+  path.resolve(__dirname, '..', '.env'),
+  path.resolve(__dirname, '.env.local'),
+  path.resolve(__dirname, '.env'),
+];
+
+dotenv.config({ path: ENV_CANDIDATES.find(fs.existsSync) });
 
 const DEFAULT_PATHS = {
   frontPublic: path.resolve(__dirname, '..', 'public'),
