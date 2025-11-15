@@ -40,7 +40,7 @@ Create a `.env` file in the project root:
 ```bash
 OPENAI_API_KEY=sk-your_key_here
 
-Start the development server with your OpenAI API key:
+Start the development server:
 
 ```bash
 npm run dev
