@@ -14,11 +14,33 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const ENV_CANDIDATES = [
+  // Local development (repo root / server directory)
   path.resolve(__dirname, '..', '.env.local'),
   path.resolve(__dirname, '..', '.env'),
   path.resolve(__dirname, '.env.local'),
   path.resolve(__dirname, '.env'),
+  // Running next to the unpacked app or portable executable
+  path.resolve(process.cwd(), '.env.local'),
+  path.resolve(process.cwd(), '.env'),
 ];
+
+// Electron portable builds expose the executable directory via PORTABLE_EXECUTABLE_DIR.
+if (process.env.PORTABLE_EXECUTABLE_DIR) {
+  ENV_CANDIDATES.push(
+    path.join(process.env.PORTABLE_EXECUTABLE_DIR, '.env.local'),
+    path.join(process.env.PORTABLE_EXECUTABLE_DIR, '.env'),
+  );
+}
+
+// Packaged resources are placed under process.resourcesPath; allow a sibling .env for installed builds.
+if (process.resourcesPath) {
+  ENV_CANDIDATES.push(
+    path.join(process.resourcesPath, '.env.local'),
+    path.join(process.resourcesPath, '.env'),
+    path.join(path.dirname(process.resourcesPath), '.env.local'),
+    path.join(path.dirname(process.resourcesPath), '.env'),
+  );
+}
 
 dotenv.config({ path: ENV_CANDIDATES.find(fs.existsSync) });
 
