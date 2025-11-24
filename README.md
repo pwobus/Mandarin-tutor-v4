@@ -74,7 +74,7 @@ The application will be available at `http://localhost:3000`
   - Uses `gpt-4o-realtime-preview` or `gpt-realtime-mini`
   - Best for “hands-free” back-and-forth speaking practice
 
-- **Standard TTS flow**
+- **Standard TTS flow and STT using Wisper, OPENAI's automatic speech recognition system**
   - Speak or send a text prompt, get back a synthesized audio reply
   - Slightly higher latency, simpler to debug
   - Backed by OpenAI TTS with browser TTS as fallback
